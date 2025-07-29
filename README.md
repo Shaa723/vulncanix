@@ -38,6 +38,7 @@ vulncanix -t https://example.com \
   -o json \
   --status-codes 200,301,403 \
   --follow-redirects \
+  -k \
   -v
 ```
 
@@ -56,6 +57,7 @@ vulncanix -t https://example.com \
 | `--user-agent` | | Custom User-Agent string | `vulncanix/1.0` |
 | `--follow-redirects` | | Follow HTTP redirects | `false` |
 | `--verbose` | `-v` | Verbose output | `false` |
+| `--insecure` | `-k` | Skip SSL certificate verification (insecure) | `false` |
 
 ## Examples
 
@@ -77,6 +79,13 @@ vulncanix -t https://example.com -c 100 -T 5
 
 # Fast scan with specific extensions
 vulncanix -t https://example.com -c 50 -e php,html,js,txt
+```
+
+### SSL Certificate Handling
+
+```bash
+# Skip SSL certificate verification for self-signed or invalid certificates
+vulncanix -t https://example.com -k
 ```
 
 ### Filtered Results

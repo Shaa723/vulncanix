@@ -31,6 +31,8 @@ impl WebScanner {
             timeout,
             &config.user_agent,
             config.follow_redirects,
+            config.insecure,
+            config.verbose,
         )?);
 
         let semaphore = Arc::new(Semaphore::new(concurrency));

@@ -26,6 +26,8 @@ impl HttpClient {
         timeout: u64,
         user_agent: &str,
         follow_redirects: bool,
+        insecure: bool,
+        verbose: bool,
     ) -> Result<Self, Box<dyn std::error::Error + Send + Sync>> {
         let redirect_policy = if follow_redirects {
             Policy::limited(10)
@@ -33,12 +35,21 @@ impl HttpClient {
             Policy::none()
         };
 
-        let client = Client::builder()
+        let mut client_builder = Client::builder()
             .timeout(Duration::from_secs(timeout))
             .user_agent(user_agent)
-            .redirect(redirect_policy)
-            .build()?;
+            .redirect(redirect_policy);
 
+        // add "SSL cert bypass" if insecure flag is set
+        if insecure {
+            client_builder = client_builder.danger_accept_invalid_certs(true);
+
+            if verbose {
+                eprintln!("SSL certificate verification disabled!");
+            }
+        }
+
+        let client = client_builder.build()?;
         let target_url = Url::parse(target_url)?;
 
         Ok(Self { client, target_url })

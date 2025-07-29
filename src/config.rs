@@ -45,6 +45,14 @@ pub struct Config {
 
     #[arg(short, long)]
     pub verbose: bool,
+
+    // SSL certificate bypass option
+    #[arg(
+        short = 'k',
+        long,
+        help = "Skip SSL certificate verification (insecure)"
+    )]
+    pub insecure: bool,
 }
 
 impl Config {
